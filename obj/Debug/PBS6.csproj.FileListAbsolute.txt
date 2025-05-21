@@ -6,3 +6,15 @@ C:\Users\nalla\source\repos\PBS6\PBS6\obj\Debug\PBS6.csproj.CoreCompileInputs.ca
 C:\Users\nalla\source\repos\PBS6\PBS6\obj\Debug\PBS6.exe
 C:\Users\nalla\source\repos\PBS6\PBS6\obj\Debug\PBS6.pdb
 C:\Users\nalla\source\repos\PBS6\PBS6\obj\Debug\PBS6.exe.config
+C:\Users\nalla\source\repos\PBS6\PBS6\bin\Debug\Colorful.Console.dll
+C:\Users\nalla\source\repos\PBS6\PBS6\bin\Debug\Spectre.Console.dll
+C:\Users\nalla\source\repos\PBS6\PBS6\bin\Debug\System.Buffers.dll
+C:\Users\nalla\source\repos\PBS6\PBS6\bin\Debug\System.Memory.dll
+C:\Users\nalla\source\repos\PBS6\PBS6\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\nalla\source\repos\PBS6\PBS6\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\nalla\source\repos\PBS6\PBS6\bin\Debug\Spectre.Console.xml
+C:\Users\nalla\source\repos\PBS6\PBS6\bin\Debug\System.Buffers.xml
+C:\Users\nalla\source\repos\PBS6\PBS6\bin\Debug\System.Memory.xml
+C:\Users\nalla\source\repos\PBS6\PBS6\bin\Debug\System.Numerics.Vectors.xml
+C:\Users\nalla\source\repos\PBS6\PBS6\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\nalla\source\repos\PBS6\PBS6\obj\Debug\PBS6.csproj.Up2Date

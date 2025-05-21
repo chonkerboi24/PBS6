@@ -1,4 +1,5 @@
 ﻿using System;
+using Spectre.Console;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -8,6 +9,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using Spectre;
+
 
 namespace PBS6
 {
@@ -15,7 +18,7 @@ namespace PBS6
     {
         // [Var]
         static int select;
-
+        
         static int playerHP = 100;
         static string playerName;
         static int playerDamage;
@@ -86,6 +89,7 @@ namespace PBS6
 
         static void TurnText()
         {
+            
             Console.WriteLine($@"
     {enemyName} the Baller {enemyName2}
     HP: {enemyHP}
@@ -498,6 +502,18 @@ Invalid input. Please enter a digit.
             else if (txtColor == 5) { Console.ForegroundColor = ConsoleColor.Magenta; Console.BackgroundColor = ConsoleColor.Black; }
             else if (txtColor == 6) { Console.ForegroundColor = ConsoleColor.Black; Console.BackgroundColor = ConsoleColor.White; }
 
+            AnsiConsole.Progress()
+                .Start(ctx =>
+                {
+                    var task = ctx.AddTask("Loading...", maxValue: 100);
+                    while (!task.IsFinished)
+                    {
+                        task.Increment(1);
+                        System.Threading.Thread.Sleep(30);
+                    }
+                });
+            Thread.Sleep(1000);
+            Console.Clear();
             MenuText();
 
             int select;
