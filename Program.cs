@@ -350,13 +350,6 @@ namespace PBS6
 
         static void Settings()
         {
-            if (Console.ForegroundColor == ConsoleColor.White) txtColor = 1;
-            else if (Console.ForegroundColor == ConsoleColor.Green) txtColor = 2;
-            else if (Console.ForegroundColor == ConsoleColor.Cyan) txtColor = 3;
-            else if (Console.ForegroundColor == ConsoleColor.DarkRed) txtColor = 4;
-            else if (Console.ForegroundColor == ConsoleColor.Magenta) txtColor = 5;
-            else if (Console.ForegroundColor == ConsoleColor.Black) txtColor = 6;
-
             SettingsText();
 
             int settingsSelect;
@@ -370,31 +363,37 @@ namespace PBS6
                 switch (settingsSelect)
                 {
                     case 1:
+                        txtColor = 1;
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.BackgroundColor = ConsoleColor.Black;
                         break;
 
                     case 2:
-                        Console.ForegroundColor= ConsoleColor.Green;
+                        txtColor = 2;
+                        Console.ForegroundColor = ConsoleColor.Green;
                         Console.BackgroundColor = ConsoleColor.Black;
                         break;
 
                     case 3:
+                        txtColor = 3;
                         Console.ForegroundColor = ConsoleColor.Cyan;
                         Console.BackgroundColor = ConsoleColor.Black;
                         break;
 
                     case 4:
+                        txtColor = 4;
                         Console.ForegroundColor = ConsoleColor.DarkRed;
                         Console.BackgroundColor = ConsoleColor.Black;
                         break;
 
                     case 5:
+                        txtColor = 5;
                         Console.ForegroundColor = ConsoleColor.Magenta;
                         Console.BackgroundColor = ConsoleColor.Black;
                         break;
 
                     case 6:
+                        txtColor = 6;
                         Console.ForegroundColor = ConsoleColor.Black;
                         Console.BackgroundColor = ConsoleColor.White;
                         break;
@@ -413,77 +412,92 @@ namespace PBS6
             {
                 Console.Clear();
                 Console.WriteLine(@"
-    Invalid input. Please enter a digit.
-    ------------------------------------");
+Invalid input. Please enter a digit.
+------------------------------------");
                 Thread.Sleep(1000);
                 Console.Clear();
                 Settings();
             }
         }
 
-        static void EnemyNameSelection()
-        {
-            enemyName = "";
-            enemyName2 = "";
-
-            if (multiEnemyMode == true)
-            {
-                enemyNameNum = enemyNameGen.Next(1, 3);
-
-                switch (enemyNameNum)
+                static void EnemyNameSelection()
                 {
-                    case 1:
-                        enemyName = "Jimmy Neutron";
-                        enemyName2 = "| Goongel Slipee";
-                        break;
+                    enemyName = "";
+                    enemyName2 = "";
 
-                    case 2:
-                        enemyName = "Dave the Magical Cheese Wizard";
-                        enemyName2 = "| Jerry";
-                        break;
+                    if (multiEnemyMode == true)
+                    {
+                        enemyNameNum = enemyNameGen.Next(1, 3);
+
+                        switch (enemyNameNum)
+                        {
+                            case 1:
+                                enemyName = "Jimmy Neutron";
+                                enemyName2 = "| Goongel Slipee";
+                                break;
+
+                            case 2:
+                                enemyName = "Dave the Magical Cheese Wizard";
+                                enemyName2 = "| Jerry";
+                                break;
+
+                        }
+                    }
+                    else if (multiEnemyMode == false)
+                    {
+                        enemyNameNum = enemyNameGen.Next(1, 5);
+                        enemyName2 = "";
+                        switch (enemyNameNum)
+                        {
+                            case 1:
+                                enemyName = "Jimmy Neutron";
+
+                                break;
+
+                            case 2:
+                                enemyName = "Goongel Slipee";
+                                break;
+
+                            case 3:
+                                enemyName = "Dave the Magical Cheese Wizard";
+                                break;
+
+                            case 4:
+                                enemyName = "Jerry";
+                                break;
+
+                        }
+                    }
 
                 }
-            }
-            else if (multiEnemyMode == false)
-            {
-                enemyNameNum = enemyNameGen.Next(1, 5);
-                enemyName2 = "";
-                switch (enemyNameNum)
+
+                static void Game()
                 {
-                    case 1:
-                        enemyName = "Jimmy Neutron";
-                        
-                        break;
 
-                    case 2:
-                        enemyName = "Goongel Slipee";
-                        break;
-
-                    case 3:
-                        enemyName = "Dave the Magical Cheese Wizard";
-                        break;
-
-                    case 4:
-                        enemyName = "Jerry";
-                        break;
-
+                    if (playerName == "")
+                    {
+                        Console.Write(@"
+    Player Name: ");
+                        playerName = Console.ReadLine();
+                    }
+                   
+                    enemyHP = enemyHPGen.Next(25, 81);
+                    EnemyNameSelection();
+                    Console.Clear();
+                    PlayerTurn();
                 }
-            }
-
-        }
-
-        static void Game()
-        {
-            enemyHP = enemyHPGen.Next(25, 81);
-            EnemyNameSelection();
-
-            PlayerTurn();
-        }
 
         
 
         private static void MainMenu()
         {
+            if (txtColor == 1) { Console.ForegroundColor = ConsoleColor.White; Console.BackgroundColor = ConsoleColor.Black; }
+            else if (txtColor == 2) { Console.ForegroundColor = ConsoleColor.Green; Console.BackgroundColor = ConsoleColor.Black; }
+            else if (txtColor == 3) { Console.ForegroundColor = ConsoleColor.Cyan; Console.BackgroundColor = ConsoleColor.Black; }
+            else if (txtColor == 4) { Console.ForegroundColor = ConsoleColor.DarkRed; Console.BackgroundColor = ConsoleColor.Black; }
+            else if (txtColor == 5) { Console.ForegroundColor = ConsoleColor.Magenta; Console.BackgroundColor = ConsoleColor.Black; }
+            else if (txtColor == 6) { Console.ForegroundColor = ConsoleColor.Black; Console.BackgroundColor = ConsoleColor.White; }
+
             MenuText();
 
             int select;
@@ -539,6 +553,7 @@ namespace PBS6
 
         static void Main(string[] args)
         {
+            playerName = "";
             Console.Clear();
             MainMenu();
         }
