@@ -42,7 +42,6 @@ namespace PBS6
 
         static void MenuText()
         {
-            playerHP = 100;
 
             Console.WriteLine(@"
     ██████╗  ██████╗ ██╗  ██╗███████╗███╗   ███╗ ██████╗ ███╗   ██╗
@@ -317,6 +316,7 @@ namespace PBS6
             {
                 Console.Clear();
                 enemyDamage = enemyDamageGen.Next(10, 16);
+                playerHP -= enemyDamage;
                 Console.WriteLine($@"
     {enemyName} dealt {enemyDamage}!
     --------------------------------");
