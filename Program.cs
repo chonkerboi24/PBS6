@@ -29,7 +29,6 @@ namespace PBS6
         static int enemyHP;
         static int enemyDamage;
         static bool stunned;
-        static bool multiEnemyMode = false;
 
         // Default Color
         static int txtColor = 4;
@@ -73,9 +72,8 @@ namespace PBS6
     [4] Red
     [5] Pink
     [6] Black
-    [7] Multi Enemy Mode [{1}]
 
-    [8] Back to menu", txtColor, multiEnemyMode));
+    [8] Back to menu", txtColor));
         }
 
         static void Stats()
@@ -91,7 +89,7 @@ namespace PBS6
         {
             
             Console.WriteLine($@"
-    {enemyName} the Baller {enemyName2}
+    {enemyName} the Baller
     HP: {enemyHP}
     
     
@@ -297,8 +295,6 @@ namespace PBS6
                     PlayerTurn();
                 }
 
-                EnemyTurn();
-
             }
             if (playerHP < 1)
             {
@@ -349,6 +345,10 @@ namespace PBS6
     You Won!!!
     ----------");
                 Thread.Sleep(1000);
+            }
+            else
+            {
+                EnemyTurn();
             }
         }
 
@@ -402,10 +402,6 @@ namespace PBS6
                         Console.BackgroundColor = ConsoleColor.White;
                         break;
 
-                    case 7:
-                        multiEnemyMode = true;
-                        break;
-
                     default:
                         Console.WriteLine("Invalid Color...");
                         break;
@@ -427,51 +423,28 @@ Invalid input. Please enter a digit.
                 static void EnemyNameSelection()
                 {
                     enemyName = "";
-                    enemyName2 = "";
 
-                    if (multiEnemyMode == true)
+                    enemyNameNum = enemyNameGen.Next(1, 5);
+                    switch (enemyNameNum)
                     {
-                        enemyNameNum = enemyNameGen.Next(1, 3);
+                        case 1:
+                            enemyName = "Jimmy Neutron";
+                            break;
 
-                        switch (enemyNameNum)
-                        {
-                            case 1:
-                                enemyName = "Jimmy Neutron";
-                                enemyName2 = "| Goongel Slipee";
-                                break;
+                        case 2:
+                            enemyName = "Goongel Slipee";
+                            break;
 
-                            case 2:
-                                enemyName = "Dave the Magical Cheese Wizard";
-                                enemyName2 = "| Jerry";
-                                break;
+                        case 3:
+                            enemyName = "Dave the Magical Cheese Wizard";
+                            break;
 
-                        }
+                        case 4:
+                            enemyName = "Jerry";
+                            break;
+
                     }
-                    else if (multiEnemyMode == false)
-                    {
-                        enemyNameNum = enemyNameGen.Next(1, 5);
-                        enemyName2 = "";
-                        switch (enemyNameNum)
-                        {
-                            case 1:
-                                enemyName = "Jimmy Neutron";
-
-                                break;
-
-                            case 2:
-                                enemyName = "Goongel Slipee";
-                                break;
-
-                            case 3:
-                                enemyName = "Dave the Magical Cheese Wizard";
-                                break;
-
-                            case 4:
-                                enemyName = "Jerry";
-                                break;
-
-                        }
-                    }
+                    
 
                 }
 
@@ -502,16 +475,7 @@ Invalid input. Please enter a digit.
             else if (txtColor == 5) { Console.ForegroundColor = ConsoleColor.Magenta; Console.BackgroundColor = ConsoleColor.Black; }
             else if (txtColor == 6) { Console.ForegroundColor = ConsoleColor.Black; Console.BackgroundColor = ConsoleColor.White; }
 
-            AnsiConsole.Progress()
-                .Start(ctx =>
-                {
-                    var task = ctx.AddTask("Loading...", maxValue: 100);
-                    while (!task.IsFinished)
-                    {
-                        task.Increment(1);
-                        System.Threading.Thread.Sleep(30);
-                    }
-                });
+            
             Thread.Sleep(1000);
             Console.Clear();
             MenuText();
