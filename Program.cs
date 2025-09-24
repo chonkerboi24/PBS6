@@ -42,6 +42,8 @@ namespace PBS6
         static Random enemyNameGen = new Random();
         static Random enemyHPGen = new Random();
 
+        static int bashUsesLeft = 3; // Set your desired limit
+
         static void MenuText()
         {
 
@@ -103,10 +105,10 @@ namespace PBS6
 
         static void AttackText()
         {
-            Console.WriteLine(@"
+            Console.WriteLine($@"
     -------[Attack]-------
     [1] Sword (7-14 Damage)
-    [2] Bash (6-12 Damage)
+    [2] Bash (6-12 Damage) [{bashUsesLeft} left]
     [3] Back");
         }
 
@@ -189,40 +191,39 @@ namespace PBS6
 
                 switch (attackSelect)
                 {
-
                     case 1:
-
                         playerDamage = playerDamageGen.Next(7, 15);
-
                         Console.Clear();
                         TurnText();
                         AttackText();
-
                         Console.WriteLine($@"
     You dealt {playerDamage} damage!");
-
                         enemyHP -= playerDamage;
-
                         Thread.Sleep(1000);
                         break;
 
                     case 2:
-
-                        playerDamage = playerDamageGen.Next(6, 13);
-
-                        Console.Clear();
-                        TurnText();
-                        AttackText();
-
-                        Console.WriteLine($@"
+                        int bashChance = playerDamageGen.Next(1, 101); // 1-100
+                        if (bashChance <= 60) // 60% chance to hit
+                        {
+                            playerDamage = playerDamageGen.Next(6, 13);
+                            Console.Clear();
+                            TurnText();
+                            AttackText();
+                            Console.WriteLine($@"
     You dealt {playerDamage} damage!");
-                        Console.WriteLine(@"
-    The enemy is stunned!");
-                        stunned = true;
-                        enemyHP -= playerDamage;
-
+                            stunned = true;
+                            enemyHP -= playerDamage;
+                        }
+                        else
+                        {
+                            Console.Clear();
+                            TurnText();
+                            AttackText();
+                            Console.WriteLine(@"
+    Bash missed!");
+                        }
                         Thread.Sleep(1000);
-
                         Console.Clear();
                         break;
 
@@ -230,9 +231,7 @@ namespace PBS6
                         Console.Clear();
                         PlayerTurn();
                         break;
-
                 }
-
             }
             else
             {
@@ -312,6 +311,12 @@ namespace PBS6
 
         static void EnemyTurn()
         {
+            if (enemyHP < 1)
+            {
+                // Enemy is dead, do nothing
+                return;
+            }
+
             if (stunned == false)
             {
                 Console.Clear();
@@ -460,6 +465,7 @@ Invalid input. Please enter a digit.
                    
                     enemyHP = enemyHPGen.Next(25, 81);
                     EnemyNameSelection();
+                    bashUsesLeft = 3; // Reset bash uses for each new enemy
                     Console.Clear();
                     PlayerTurn();
                 }
