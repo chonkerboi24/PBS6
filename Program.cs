@@ -17,32 +17,19 @@ namespace PBS6
     internal class Program
     {
         // [Var]
-        static int select;
-        
-        static int playerHP = 100;
-        static string playerName;
-        static int playerDamage;
+        static Player player = new Player();
+        static Enemy enemy = new Enemy();
 
         static int enemyNameNum;
-        static string enemyName2;
-        static string enemyName;
-        static int enemyHP;
-        static int enemyDamage;
-        static bool stunned;
 
         // Default Color
         static int txtColor = 4;
 
         static int winCount = 0;
-        static int playerKills = 0;
-        static int playerDeaths = 0;
-
         static Random playerDamageGen = new Random();
         static Random enemyDamageGen = new Random();
         static Random enemyNameGen = new Random();
         static Random enemyHPGen = new Random();
-
-        static int bashUsesLeft = 3; // Set your desired limit
 
         static void MenuText()
         {
@@ -83,7 +70,7 @@ namespace PBS6
             Console.WriteLine(string.Format(@"
     Wins: {0}
     Kills: {1}
-    Deaths: {2}", winCount, playerKills, playerDeaths));
+    Deaths: {2}", winCount, player.Kills, player.Deaths));
             Console.ReadKey();
         }
 
@@ -91,12 +78,12 @@ namespace PBS6
         {
             
             Console.WriteLine($@"
-    {enemyName} the Baller
-    HP: {enemyHP}
+    {enemy.Name} the Baller
+    HP: {enemy.HP}
     
     
-    {playerName}
-    HP: {playerHP}
+    {player.Name}
+    HP: {player.HP}
     -----------
     [1] Attack
     [2] Bag
@@ -108,7 +95,7 @@ namespace PBS6
             Console.WriteLine($@"
     -------[Attack]-------
     [1] Sword (7-14 Damage)
-    [2] Bash (6-12 Damage) [{bashUsesLeft} left]
+    [2] Bash (6-12 Damage) [{player.BashUsesLeft} left]
     [3] Back");
         }
 
@@ -144,7 +131,7 @@ namespace PBS6
                         Console.WriteLine($@"
     You gained 10 health!");
 
-                        playerHP += 10;
+                        player.HP += 10;
 
                         Thread.Sleep(1000);
                         break;
@@ -155,11 +142,11 @@ namespace PBS6
                         break;
 
                     case 3:
-                        playerHP = 0;
+                        player.HP = 0;
                         break;
 
                     case 4:
-                        enemyHP = 0;
+                        enemy.HP = 0;
                         break;
                 }
             }
@@ -192,13 +179,13 @@ namespace PBS6
                 switch (attackSelect)
                 {
                     case 1:
-                        playerDamage = playerDamageGen.Next(7, 15);
+                        player.Damage = playerDamageGen.Next(7, 15);
                         Console.Clear();
                         TurnText();
                         AttackText();
                         Console.WriteLine($@"
-    You dealt {playerDamage} damage!");
-                        enemyHP -= playerDamage;
+    You dealt {player.Damage} damage!");
+                        enemy.HP -= player.Damage;
                         Thread.Sleep(1000);
                         break;
 
@@ -206,14 +193,14 @@ namespace PBS6
                         int bashChance = playerDamageGen.Next(1, 101); // 1-100
                         if (bashChance <= 60) // 60% chance to hit
                         {
-                            playerDamage = playerDamageGen.Next(6, 13);
+                            player.Damage = playerDamageGen.Next(6, 13);
                             Console.Clear();
                             TurnText();
                             AttackText();
                             Console.WriteLine($@"
-    You dealt {playerDamage} damage!");
-                            stunned = true;
-                            enemyHP -= playerDamage;
+    You dealt {player.Damage} damage!");
+                            enemy.Stunned = true;
+                            enemy.HP -= player.Damage;
                         }
                         else
                         {
@@ -247,7 +234,7 @@ namespace PBS6
 
         static void PlayerTurn()
         {
-            while (playerHP > 0 && enemyHP > 0)
+            while (player.HP > 0 && enemy.HP > 0)
             {
                 TurnText();
 
@@ -295,9 +282,9 @@ namespace PBS6
                 }
 
             }
-            if (playerHP < 1)
+            if (player.HP < 1)
             {
-                playerDeaths += 1;
+                player.Deaths += 1;
                 Console.Clear();
                 Console.WriteLine(@"
     You Lost...
@@ -311,19 +298,19 @@ namespace PBS6
 
         static void EnemyTurn()
         {
-            if (enemyHP < 1)
+            if (enemy.HP < 1)
             {
                 // Enemy is dead, do nothing
                 return;
             }
 
-            if (stunned == false)
+            if (enemy.Stunned == false)
             {
                 Console.Clear();
-                enemyDamage = enemyDamageGen.Next(10, 16);
-                playerHP -= enemyDamage;
+                enemy.Damage = enemyDamageGen.Next(10, 16);
+                player.HP -= enemy.Damage;
                 Console.WriteLine($@"
-    {enemyName} dealt {enemyDamage}!
+    {enemy.Name} dealt {enemy.Damage}!
     --------------------------------");
                 Thread.Sleep(1000);
                 Console.Clear();
@@ -331,9 +318,9 @@ namespace PBS6
             else
             {
                 Console.WriteLine($@"
-    {enemyName} is stunned!
+    {enemy.Name} is stunned!
     -----------------------");
-                stunned = false;
+                enemy.Stunned = false;
                 Thread.Sleep(1000);
                 Console.Clear();
             }
@@ -341,10 +328,10 @@ namespace PBS6
 
         static void EnemyDeathChecker()
         {
-            if (enemyHP < 1)
+            if (enemy.HP < 1)
             {
                 winCount += 1;
-                playerKills += 1;
+                player.Kills += 1;
                 Console.Clear();
                 Console.WriteLine(@"
     You Won!!!
@@ -427,25 +414,25 @@ Invalid input. Please enter a digit.
 
                 static void EnemyNameSelection()
                 {
-                    enemyName = "";
+                    enemy.Name = "";
 
                     enemyNameNum = enemyNameGen.Next(1, 5);
                     switch (enemyNameNum)
                     {
                         case 1:
-                            enemyName = "Jimmy Neutron";
+                            enemy.Name = "Jimmy Neutron";
                             break;
 
                         case 2:
-                            enemyName = "Goongel Slipee";
+                            enemy.Name = "Goongel Slipee";
                             break;
 
                         case 3:
-                            enemyName = "Dave the Magical Cheese Wizard";
+                            enemy.Name = "Dave the Magical Cheese Wizard";
                             break;
 
                         case 4:
-                            enemyName = "Jerry";
+                            enemy.Name = "Jerry";
                             break;
 
                     }
@@ -456,16 +443,16 @@ Invalid input. Please enter a digit.
                 static void Game()
                 {
 
-                    if (playerName == "")
+                    if (player.Name == "")
                     {
                         Console.Write(@"
     Player Name: ");
-                        playerName = Console.ReadLine();
+                        player.Name = Console.ReadLine();
                     }
                    
-                    enemyHP = enemyHPGen.Next(25, 81);
+                    enemy.HP = enemyHPGen.Next(25, 81);
                     EnemyNameSelection();
-                    bashUsesLeft = 3; // Reset bash uses for each new enemy
+                    player.BashUsesLeft = 3; // Reset bash uses for each new enemy
                     Console.Clear();
                     PlayerTurn();
                 }
@@ -539,7 +526,8 @@ Invalid input. Please enter a digit.
 
         static void Main(string[] args)
         {
-            playerName = "";
+            player = new Player();
+            enemy = new Enemy();
             Console.Clear();
             MainMenu();
         }
